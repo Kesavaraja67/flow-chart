@@ -21,20 +21,11 @@ export const StartNode = memo(function StartNode({ id, data, selected }: NodePro
         .filter(Boolean)
         .join(' ')}
     >
-      <div style={{ padding: '12px 14px 10px 18px' }}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: '6px',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '14px' }}>▶</span>
-            <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-text-1)' }}>
-              {d.title || 'Start'}
-            </span>
+      <div className="wf-node-header">
+        <div className="wf-node-header-row">
+          <div className="wf-node-title-wrap">
+            <span className="wf-node-icon">▶</span>
+            <span className="wf-node-title">{d.title || 'Start'}</span>
           </div>
           {isInvalid ? (
             <span className="node-error-pill" title={nodeErrors.join('\n')}>
@@ -42,35 +33,27 @@ export const StartNode = memo(function StartNode({ id, data, selected }: NodePro
             </span>
           ) : (
             <span
+              className="wf-node-status-dot"
               style={{
-                width: '7px',
-                height: '7px',
-                borderRadius: '50%',
                 background: 'var(--color-start)',
-                boxShadow: '0 0 6px var(--color-start)',
-                display: 'block',
-                flexShrink: 0,
+                boxShadow: '0 0 9px rgba(34, 197, 94, 0.75)',
               }}
             />
           )}
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span
+            className="wf-node-tag"
             style={{
-              fontSize: '10px',
-              fontWeight: 500,
-              letterSpacing: '0.07em',
-              textTransform: 'uppercase',
               color: 'var(--color-start)',
-              background: 'rgba(16,185,129,0.12)',
-              padding: '2px 7px',
-              borderRadius: '4px',
+              background: 'rgba(34, 197, 94, 0.13)',
+              borderColor: 'rgba(34, 197, 94, 0.35)',
             }}
           >
             Trigger
           </span>
           {d.metadata && d.metadata.length > 0 ? (
-            <span style={{ fontSize: '11px', color: 'var(--color-text-3)' }}>
+            <span className="wf-node-meta-text" style={{ color: 'var(--color-text-2)' }}>
               {d.metadata.length} field{d.metadata.length !== 1 ? 's' : ''}
             </span>
           ) : null}

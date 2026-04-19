@@ -17,7 +17,7 @@ const ITEMS: PaletteItem[] = [
     icon: '▶',
     label: 'Start',
     color: 'var(--color-start)',
-    bgColor: 'rgba(16,185,129,0.1)',
+    bgColor: 'rgba(34,197,94,0.12)',
     desc: 'Workflow entry point',
   },
   {
@@ -25,7 +25,7 @@ const ITEMS: PaletteItem[] = [
     icon: '✓',
     label: 'Task',
     color: 'var(--color-task)',
-    bgColor: 'rgba(59,130,246,0.1)',
+    bgColor: 'rgba(56,189,248,0.12)',
     desc: 'Human task or action',
   },
   {
@@ -33,7 +33,7 @@ const ITEMS: PaletteItem[] = [
     icon: '◇',
     label: 'Approval',
     color: 'var(--color-approval)',
-    bgColor: 'rgba(245,158,11,0.1)',
+    bgColor: 'rgba(245,158,11,0.12)',
     desc: 'Approval gate',
   },
   {
@@ -41,7 +41,7 @@ const ITEMS: PaletteItem[] = [
     icon: '⚡',
     label: 'Automation',
     color: 'var(--color-automated)',
-    bgColor: 'rgba(139,92,246,0.1)',
+    bgColor: 'rgba(139,92,246,0.14)',
     desc: 'System action',
   },
   {
@@ -49,7 +49,7 @@ const ITEMS: PaletteItem[] = [
     icon: '■',
     label: 'End',
     color: 'var(--color-end)',
-    bgColor: 'rgba(239,68,68,0.1)',
+    bgColor: 'rgba(248,113,113,0.12)',
     desc: 'Workflow terminal',
   },
 ];
@@ -66,10 +66,8 @@ export function NodePalette() {
 
   return (
     <aside
+      className="wf-sidebar"
       style={{
-        width: '200px',
-        background: 'var(--color-bg-2)',
-        borderRight: '1px solid var(--color-border-1)',
         display: 'flex',
         flexDirection: 'column',
         flexShrink: 0,
@@ -78,11 +76,11 @@ export function NodePalette() {
     >
       <div style={{ padding: '16px 16px 12px', borderBottom: '1px solid var(--color-border-1)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
-          <span style={{ fontSize: '16px' }}>🔷</span>
-          <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--color-brand)' }}>FlowCraft</span>
+          <span style={{ fontSize: '16px' }}>◇</span>
+          <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--color-accent)' }}>FlowCraft</span>
         </div>
         <p style={{ fontSize: '11px', color: 'var(--color-text-3)', marginLeft: '24px' }}>
-          HR Workflow Designer
+          Workflow Studio
         </p>
       </div>
 
@@ -90,7 +88,7 @@ export function NodePalette() {
         <p
           style={{
             fontSize: '10px',
-            fontWeight: 500,
+            fontWeight: 600,
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
             color: 'var(--color-text-4)',
@@ -104,37 +102,29 @@ export function NodePalette() {
         {ITEMS.map(item => (
           <div
             key={item.type}
+            className="wf-palette-item"
             draggable
             onDragStart={e => onDragStart(e, item.type)}
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              padding: '9px 10px',
-              borderRadius: '8px',
-              border: `1px solid ${item.color}30`,
-              borderLeft: `3px solid ${item.color}`,
-              background: item.bgColor,
-              cursor: 'grab',
-              marginBottom: '6px',
-              transition: 'transform 0.12s, box-shadow 0.12s',
-              userSelect: 'none',
-            }}
-            onMouseEnter={e => {
-              (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-1px)';
-              (e.currentTarget as HTMLDivElement).style.boxShadow = '0 4px 16px rgba(0,0,0,0.3)';
-            }}
-            onMouseLeave={e => {
-              (e.currentTarget as HTMLDivElement).style.transform = '';
-              (e.currentTarget as HTMLDivElement).style.boxShadow = '';
+              borderColor: `${item.color}3b`,
+              background: `linear-gradient(135deg, ${item.bgColor} 0%, rgba(22,27,34,0.85) 100%)`,
             }}
           >
-            <span style={{ fontSize: '13px', flexShrink: 0 }}>{item.icon}</span>
+            <span
+              className="wf-palette-icon"
+              style={{
+                color: item.color,
+                background: `${item.color}1e`,
+                border: `1px solid ${item.color}45`,
+              }}
+            >
+              {item.icon}
+            </span>
             <div>
-              <p style={{ fontSize: '12px', fontWeight: 600, color: item.color, lineHeight: 1.2 }}>
+              <p style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-text-1)', lineHeight: 1.2 }}>
                 {item.label}
               </p>
-              <p style={{ fontSize: '10px', color: 'var(--color-text-3)', lineHeight: 1.2, marginTop: '1px' }}>
+              <p style={{ fontSize: '10px', color: 'var(--color-text-3)', lineHeight: 1.2, marginTop: '2px' }}>
                 {item.desc}
               </p>
             </div>
@@ -146,11 +136,11 @@ export function NodePalette() {
         </p>
       </div>
 
-      <div style={{ padding: '10px', borderTop: '1px solid var(--color-border-1)' }}>
+      <div style={{ padding: '12px', borderTop: '1px solid var(--color-border-1)' }}>
         <p
           style={{
             fontSize: '10px',
-            fontWeight: 500,
+            fontWeight: 600,
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
             color: 'var(--color-text-4)',
@@ -160,26 +150,8 @@ export function NodePalette() {
         >
           Quick Actions
         </p>
-        <button
-          type="button"
-          onClick={() => loadDemoWorkflow()}
-          style={{
-            width: '100%',
-            padding: '7px 10px',
-            borderRadius: '6px',
-            background: 'var(--color-bg-4)',
-            border: '1px solid var(--color-border-2)',
-            color: 'var(--color-text-2)',
-            fontSize: '12px',
-            fontFamily: 'Inter, sans-serif',
-            cursor: 'pointer',
-            marginBottom: '10px',
-            transition: 'background 0.15s',
-          }}
-          onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.background = 'var(--color-bg-5)')}
-          onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.background = 'var(--color-bg-4)')}
-        >
-          🔄 Load Demo
+        <button type="button" onClick={() => loadDemoWorkflow()} className="btn btn-ghost" style={{ width: '100%', marginBottom: '10px' }}>
+          ⟳ Load Demo
         </button>
         <div
           style={{

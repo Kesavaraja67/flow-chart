@@ -30,10 +30,9 @@ export function Header({ onImportClick }: Props) {
 
   return (
     <header
+      className="wf-header"
       style={{
-        height: '48px',
-        background: 'var(--color-bg-2)',
-        borderBottom: '1px solid var(--color-border-1)',
+        height: '52px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -43,17 +42,17 @@ export function Header({ onImportClick }: Props) {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
-        <span style={{ fontSize: '18px' }}>🔷</span>
-        <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--color-brand)' }}>FlowCraft</span>
+        <span style={{ fontSize: '16px', color: 'var(--color-accent)' }}>◇</span>
+        <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--color-accent)' }}>FlowCraft</span>
         <span style={{ color: 'var(--color-border-2)', margin: '0 4px' }}>|</span>
-        <span style={{ fontSize: '13px', color: 'var(--color-text-2)' }}>HR Workflow Designer</span>
+        <span style={{ fontSize: '12px', color: 'var(--color-text-2)' }}>Workflow Designer</span>
         <>
           <span style={{ color: 'var(--color-border-2)' }}>›</span>
           <span
             style={{
               fontSize: '13px',
               color: 'var(--color-text-1)',
-              fontWeight: 500,
+              fontWeight: 600,
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
@@ -66,10 +65,24 @@ export function Header({ onImportClick }: Props) {
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
-        <button type="button" className="btn btn-ghost" onClick={() => undo()} disabled={!canUndo} title="Undo (Ctrl+Z)" style={{ padding: '0 10px' }}>
+        <button
+          type="button"
+          className="btn btn-ghost"
+          onClick={() => undo()}
+          disabled={!canUndo}
+          title="Undo (Ctrl+Z)"
+          style={{ padding: '0 10px' }}
+        >
           ↩
         </button>
-        <button type="button" className="btn btn-ghost" onClick={() => redo()} disabled={!canRedo} title="Redo (Ctrl+Y)" style={{ padding: '0 10px', marginRight: '4px' }}>
+        <button
+          type="button"
+          className="btn btn-ghost"
+          onClick={() => redo()}
+          disabled={!canRedo}
+          title="Redo (Ctrl+Y)"
+          style={{ padding: '0 10px', marginRight: '4px' }}
+        >
           ↪
         </button>
 
@@ -87,7 +100,12 @@ export function Header({ onImportClick }: Props) {
         <button type="button" className="btn btn-ghost" onClick={handleClear} style={{ fontSize: '12px' }}>
           🗑 Clear
         </button>
-        <button type="button" className="btn btn-primary" onClick={() => void runSimulation()} style={{ fontSize: '12px', fontWeight: 600 }}>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={() => void runSimulation()}
+          style={{ fontSize: '12px', fontWeight: 600 }}
+        >
           ▶ Run Simulation
         </button>
       </div>

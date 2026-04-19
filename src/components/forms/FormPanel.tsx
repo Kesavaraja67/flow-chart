@@ -46,12 +46,9 @@ export function FormPanel() {
   if (!node) {
     return (
       <aside
-        className="anim-slide-in"
+        className="wf-form-panel anim-slide-in"
         style={{
-          width: '280px',
           flexShrink: 0,
-          background: 'var(--color-bg-2)',
-          borderLeft: '1px solid var(--color-border-1)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -62,17 +59,17 @@ export function FormPanel() {
       >
         <div
           style={{
-            width: '56px',
-            height: '56px',
-            borderRadius: '12px',
-            background: 'var(--color-bg-3)',
-            border: '1px solid var(--color-border-1)',
+            width: '60px',
+            height: '60px',
+            borderRadius: '14px',
+            background: 'rgba(139, 92, 246, 0.08)',
+            border: '1px solid rgba(139, 92, 246, 0.25)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             marginBottom: '16px',
             fontSize: '24px',
-            color: 'var(--color-text-3)',
+            color: 'var(--color-accent)',
           }}
         >
           ←
@@ -80,7 +77,7 @@ export function FormPanel() {
         <p style={{ fontSize: '15px', fontWeight: 600, color: 'var(--color-text-1)', marginBottom: '8px' }}>
           Select a node
         </p>
-        <p style={{ fontSize: '12px', color: 'var(--color-text-3)', lineHeight: 1.5 }}>
+        <p style={{ fontSize: '12px', color: 'var(--color-text-2)', lineHeight: 1.55 }}>
           Click any step on the canvas to configure fields, approvals, and automations.
         </p>
       </aside>
@@ -97,16 +94,13 @@ export function FormPanel() {
     return null;
   };
 
-  const accent = TYPE_COLOR[node.type] ?? 'var(--color-brand)';
+  const accent = TYPE_COLOR[node.type] ?? 'var(--color-accent)';
 
   return (
     <aside
-      className="anim-slide-in"
+      className="wf-form-panel anim-slide-in"
       style={{
-        width: '280px',
         flexShrink: 0,
-        background: 'var(--color-bg-2)',
-        borderLeft: '1px solid var(--color-border-1)',
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
@@ -116,7 +110,8 @@ export function FormPanel() {
         style={{
           padding: '14px 16px',
           borderBottom: '1px solid var(--color-border-1)',
-          background: 'var(--color-bg-0)',
+          background: 'rgba(10, 14, 22, 0.65)',
+          backdropFilter: 'blur(4px)',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px' }}>
@@ -125,13 +120,14 @@ export function FormPanel() {
               style={{
                 display: 'inline-block',
                 fontSize: '10px',
-                fontWeight: 600,
+                fontWeight: 700,
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
                 color: accent,
-                background: `${accent}18`,
-                padding: '3px 8px',
-                borderRadius: '4px',
+                background: `${accent}1a`,
+                border: `1px solid ${accent}4a`,
+                padding: '3px 9px',
+                borderRadius: '999px',
                 marginBottom: '8px',
               }}
             >
