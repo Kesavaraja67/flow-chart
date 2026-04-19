@@ -1,17 +1,65 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSimulation } from '../../hooks/useSimulation';
 import { SimulationLog } from './SimulationLog';
+
+type FullscreenCapableElement = HTMLElement & {
+  webkitRequestFullscreen?: () => Promise<void> | void;
+  msRequestFullscreen?: () => Promise<void> | void;
+};
+
+type FullscreenCapableDocument = Document & {
+  webkitExitFullscreen?: () => Promise<void> | void;
+  msExitFullscreen?: () => Promise<void> | void;
+  webkitFullscreenElement?: Element | null;
+  msFullscreenElement?: Element | null;
+};
+
+function getFullscreenElement(doc: FullscreenCapableDocument): Element | null {
+  return doc.fullscreenElement ?? doc.webkitFullscreenElement ?? doc.msFullscreenElement ?? null;
+}
+
+async function requestElementFullscreen(element: FullscreenCapableElement): Promise<void> {
+  if (element.requestFullscreen) {
+    await element.requestFullscreen();
+    return;
+  }
+
+  if (element.webkitRequestFullscreen) {
+    await element.webkitRequestFullscreen();
+    return;
+  }
+
+  if (element.msRequestFullscreen) {
+    await element.msRequestFullscreen();
+  }
+}
+
+async function exitDocumentFullscreen(doc: FullscreenCapableDocument): Promise<void> {
+  if (doc.exitFullscreen) {
+    await doc.exitFullscreen();
+    return;
+  }
+
+  if (doc.webkitExitFullscreen) {
+    await doc.webkitExitFullscreen();
+    return;
+  }
+
+  if (doc.msExitFullscreen) {
+    await doc.msExitFullscreen();
+  }
+}
 
 const STATUS_BADGE: Record<string, { bg: string; color: string; border: string }> = {
   idle: {
     bg: 'rgba(255,255,255,0.03)',
     color: 'var(--color-text-3)',
-    border: 'var(--color-border-1)',
+    border: 'var(--sim-color-border)',
   },
   running: {
-    bg: 'rgba(139,92,246,0.16)',
-    color: 'var(--color-accent)',
-    border: 'rgba(139,92,246,0.4)',
+    bg: 'var(--sim-color-accent-soft)',
+    color: 'var(--sim-color-accent)',
+    border: 'var(--sim-color-accent-border)',
   },
   complete: {
     bg: 'rgba(34,197,94,0.16)',
@@ -35,6 +83,8 @@ const STATUS_LABEL: Record<string, string> = {
 export function SandboxPanel() {
   const { runSimulation, status, result, isOpen, toggle } = useSimulation();
   const [progressKey, setProgressKey] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const simulatorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (status === 'running') {
@@ -42,13 +92,69 @@ export function SandboxPanel() {
     }
   }, [status]);
 
+  useEffect(() => {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    const doc = document as FullscreenCapableDocument;
+
+    const handleFullscreenChange = () => {
+      setIsFullscreen(getFullscreenElement(doc) === simulatorRef.current);
+    };
+
+    handleFullscreenChange();
+
+    doc.addEventListener('fullscreenchange', handleFullscreenChange);
+    doc.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    doc.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+    return () => {
+      doc.removeEventListener('fullscreenchange', handleFullscreenChange);
+      doc.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      doc.removeEventListener('MSFullscreenChange', handleFullscreenChange);
+    };
+  }, []);
+
+  const canToggleFullscreen =
+    typeof document !== 'undefined' &&
+    (document.fullscreenEnabled ||
+      Boolean((document as FullscreenCapableDocument).webkitExitFullscreen) ||
+      Boolean((document as FullscreenCapableDocument).msExitFullscreen));
+
+  const toggleFullscreen = async () => {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    const doc = document as FullscreenCapableDocument;
+
+    try {
+      if (getFullscreenElement(doc) === simulatorRef.current) {
+        await exitDocumentFullscreen(doc);
+        return;
+      }
+
+      const target = simulatorRef.current as FullscreenCapableElement | null;
+      if (!target) {
+        return;
+      }
+
+      await requestElementFullscreen(target);
+    } catch {
+      // Ignore fullscreen API errors to keep behavior safe across browsers.
+    }
+  };
+
   const badge = STATUS_BADGE[status] ?? STATUS_BADGE.idle;
+  const isPanelExpanded = isOpen || isFullscreen;
 
   return (
     <div
+      ref={simulatorRef}
       className="wf-sandbox"
       style={{
-        height: isOpen ? '300px' : '46px',
+        height: isFullscreen ? '100vh' : isPanelExpanded ? '300px' : '46px',
         transition: 'height 0.2s ease',
         display: 'flex',
         flexDirection: 'column',
@@ -64,13 +170,13 @@ export function SandboxPanel() {
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '0 16px',
-          borderBottom: isOpen ? '1px solid var(--color-border-1)' : 'none',
-          background: 'rgba(10, 14, 22, 0.62)',
+          borderBottom: isPanelExpanded ? '1px solid var(--sim-color-border)' : 'none',
+          background: 'var(--sim-color-header-bg)',
           backdropFilter: 'blur(4px)',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
-          <span style={{ fontSize: '15px', color: 'var(--color-accent)' }}>◉</span>
+          <span style={{ fontSize: '15px', color: 'var(--sim-color-accent)' }}>◉</span>
           <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-text-1)' }}>Workflow Simulator</span>
           <span
             style={{
@@ -101,16 +207,25 @@ export function SandboxPanel() {
           <button
             type="button"
             className="btn btn-ghost"
+            onClick={() => void toggleFullscreen()}
+            disabled={!canToggleFullscreen}
+            title={!canToggleFullscreen ? 'Fullscreen is not supported in this browser' : undefined}
+          >
+            {isFullscreen ? '⤡ Exit Full Screen' : '⤢ Full Screen'}
+          </button>
+          <button
+            type="button"
+            className="btn btn-ghost"
             onClick={toggle}
             style={{ minWidth: '36px' }}
             aria-label="Toggle panel"
           >
-            {isOpen ? '▼' : '▲'}
+            {isPanelExpanded ? '▼' : '▲'}
           </button>
         </div>
       </div>
 
-      {isOpen ? (
+      {isPanelExpanded ? (
         <div style={{ flex: 1, overflowY: 'auto', padding: '16px', minHeight: 0 }}>
           {status === 'idle' ? (
             <div
@@ -147,17 +262,17 @@ export function SandboxPanel() {
                 padding: '24px',
               }}
             >
-              <span className="anim-spin" style={{ fontSize: '36px', color: 'var(--color-accent)' }}>
+              <span className="anim-spin" style={{ fontSize: '36px', color: 'var(--sim-color-accent)' }}>
                 ⟳
               </span>
-              <p style={{ fontSize: '14px', fontWeight: 500, color: 'var(--color-accent)' }}>Executing workflow…</p>
+              <p style={{ fontSize: '14px', fontWeight: 500, color: 'var(--sim-color-accent)' }}>Executing workflow…</p>
               <div
                 style={{
                   width: '100%',
                   maxWidth: '400px',
                   height: '4px',
                   borderRadius: '4px',
-                  background: 'var(--color-border-1)',
+                  background: 'var(--sim-color-track)',
                   overflow: 'hidden',
                 }}
               >
@@ -167,7 +282,8 @@ export function SandboxPanel() {
                   style={{
                     height: '100%',
                     borderRadius: '4px',
-                    background: 'linear-gradient(90deg, #7c3aed 0%, #8b5cf6 60%, #a78bfa 100%)',
+                    background:
+                      'linear-gradient(90deg, var(--sim-color-accent-strong) 0%, var(--sim-color-accent) 55%, var(--sim-color-accent-bright) 100%)',
                   }}
                 />
               </div>

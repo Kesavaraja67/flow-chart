@@ -42,6 +42,17 @@
   --color-error: #f87171;
   --color-info: #60a5fa;
 
+  --sim-color-bg-top: #112232;
+  --sim-color-bg-bottom: #0d1b29;
+  --sim-color-header-bg: rgba(8, 22, 33, 0.76);
+  --sim-color-border: #1f3b4a;
+  --sim-color-accent: #06b6d4;
+  --sim-color-accent-strong: #0891b2;
+  --sim-color-accent-bright: #22d3ee;
+  --sim-color-accent-soft: rgba(6, 182, 212, 0.18);
+  --sim-color-accent-border: rgba(34, 211, 238, 0.46);
+  --sim-color-track: rgba(31, 59, 74, 0.55);
+
   --radius-node: 10px;
 
   --shadow-node: 0 12px 28px rgba(3, 7, 18, 0.55);
@@ -386,8 +397,16 @@ body {
 }
 
 .wf-sandbox {
-  background: linear-gradient(180deg, #141a24 0%, #121821 100%);
-  border-top: 1px solid var(--color-border-1);
+  background: linear-gradient(180deg, var(--sim-color-bg-top) 0%, var(--sim-color-bg-bottom) 100%);
+  border-top: 1px solid var(--sim-color-border);
+}
+
+.wf-sandbox:fullscreen,
+.wf-sandbox:-webkit-full-screen,
+.wf-sandbox:-ms-fullscreen {
+  width: 100vw;
+  height: 100vh !important;
+  border-top: none;
 }
 
 .wf-palette-item {
