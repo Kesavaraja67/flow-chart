@@ -1,32 +1,39 @@
-# FlowCraft — HR Workflow Designer
+<div align="center">
 
-[![CI](https://img.shields.io/badge/CI-not%20configured-00000000?logo=githubactions&logoColor=6b7280&labelColor=00000000)](https://github.com/Kesavaraja67/flow-chart/actions)
-[![License](https://img.shields.io/badge/license-not%20specified-00000000?logo=opensourceinitiative&logoColor=6b7280&labelColor=00000000)](https://github.com/Kesavaraja67/flow-chart)
-[![Version](https://img.shields.io/badge/version-0.0.0-2563eb)](./package.json)
+# 🟣 FlowCraft
+### *Design, Validate, and Simulate HR Workflows on an Infinite Canvas*
 
-![FlowCraft interface](./app-interface.png)
+<br />
 
-FlowCraft is a visual HR workflow designer for building, validating, and simulating onboarding and approval flows on an infinite canvas.
+<img src="./app-interface.png" width="750">
 
-## Key Features
+**FlowCraft** is a visual designer built for modern HR teams. Move away from rigid spreadsheets and build complex onboarding and approval flows with a **drag-and-drop** interface.
 
-- Drag-and-drop workflow builder with custom node types.
-- Typed step configuration forms for consistent setup.
-- Built-in workflow validation before execution.
-- Step-by-step simulation with duration-aware timeline logs.
-- Undo/redo history, JSON import/export, and keyboard shortcuts.
+</div>
 
-## Workflow Demo
+<br />
 
-See how each step runs in sequence with execution timing and simulation logs.
+## ✨ Key Features
 
-![FlowCraft workflow simulator](./work-simulator.png)
 
-## Quick Start
+| 🖱️ Builder | ✅ Logic | ⏱️ Simulation |
+| :--- | :--- | :--- |
+| **Drag-and-drop** builder | **Built-in validation** | **Timeline logs** |
+| **Undo/Redo** history | **Typed forms** | **JSON Export/Import** |
+
+<br />
+
+## 📽️ Workflow Demo
+
+*Experience how steps execute in real-time with our timeline-aware simulator.*
+
+<p align="center">
+  <img src="./work-simulator.png" width="750">
+</p>
+
+## 🚀 Quick Start
 
 ```bash
 git clone https://github.com/Kesavaraja67/flow-chart.git
-cd flow-chart
-npm install
+cd flow-chart && npm install
 npm run dev
-```
