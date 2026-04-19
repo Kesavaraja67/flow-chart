@@ -12,10 +12,9 @@ export function StatusBar() {
 
   return (
     <div
+      className="wf-statusbar"
       style={{
-        height: '28px',
-        background: 'var(--color-bg-0)',
-        borderTop: '1px solid var(--color-border-1)',
+        height: '30px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -30,7 +29,9 @@ export function StatusBar() {
         <span>⬡ {nodes.length} nodes</span>
         <span>⟶ {edges.length} edges</span>
         <span style={{ color: validation.valid ? 'var(--color-success)' : 'var(--color-error)' }}>
-          {validation.valid ? '✓ Valid' : `⚠ ${validation.errors.length} error${validation.errors.length !== 1 ? 's' : ''}`}
+          {validation.valid
+            ? '✓ Valid'
+            : `⚠ ${validation.errors.length} error${validation.errors.length !== 1 ? 's' : ''}`}
         </span>
         <span style={{ color: 'var(--color-text-4)' }}>
           history {historyIndex + 1}/{history.length}

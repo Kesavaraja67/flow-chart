@@ -3,7 +3,9 @@ import {
   applyNodeChanges,
   Background,
   BackgroundVariant,
+  ConnectionLineType,
   Controls,
+  MarkerType,
   MiniMap,
   ReactFlow,
   type Edge,
@@ -11,7 +13,7 @@ import {
   type Node,
   type NodeChange,
 } from '@xyflow/react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useWorkflow } from '../../hooks/useWorkflow';
 import { useWorkflowStore } from '../../store/workflowStore';
 import { nodeTypes } from '../nodes/index';
@@ -43,6 +45,7 @@ export function WorkflowCanvas() {
     setRfEdges(
       zustandEdges.map(e => ({
         id: e.id,
+        type: 'default',
         source: e.source,
         target: e.target,
         sourceHandle: e.sourceHandle ?? undefined,
@@ -100,10 +103,25 @@ export function WorkflowCanvas() {
 
   const [isDragOver, setIsDragOver] = useState(false);
 
+  const defaultEdgeOptions = useMemo(
+    () => ({
+      type: 'default',
+      markerEnd: {
+        type: MarkerType.ArrowClosed,
+        color: 'var(--color-accent)',
+      },
+      style: {
+        stroke: 'var(--color-accent)',
+        strokeWidth: 2,
+      },
+    }),
+    [],
+  );
+
   return (
     <div
       className={`w-full h-full min-h-0 min-w-0 ${isDragOver ? 'canvas-drag-over' : ''}`}
-      style={{ background: 'var(--color-bg-1)' }}
+      style={{ background: 'var(--color-bg-0)' }}
       onDragOver={e => {
         onDragOver(e);
         setIsDragOver(true);
@@ -133,9 +151,12 @@ export function WorkflowCanvas() {
         fitViewOptions={{ padding: 0.25 }}
         minZoom={0.2}
         maxZoom={2}
+        connectionLineType={ConnectionLineType.Bezier}
+        connectionLineStyle={{ stroke: 'var(--color-accent)', strokeWidth: 2 }}
+        defaultEdgeOptions={defaultEdgeOptions}
         proOptions={{ hideAttribution: true }}
       >
-        <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="var(--color-border-1)" />
+        <Background variant={BackgroundVariant.Dots} gap={22} size={1.1} color="var(--color-grid-dot)" />
         <Controls showInteractive={false} />
         <MiniMap
           nodeStrokeWidth={2}

@@ -12,11 +12,11 @@ const STATUS_ICONS: Record<SimulationStep['status'], string> = {
 };
 
 const BADGE: Record<string, string> = {
-  start: 'rgba(16,185,129,0.15)',
-  task: 'rgba(59,130,246,0.15)',
+  start: 'rgba(34,197,94,0.15)',
+  task: 'rgba(56,189,248,0.15)',
   approval: 'rgba(245,158,11,0.15)',
-  automated: 'rgba(139,92,246,0.15)',
-  end: 'rgba(239,68,68,0.15)',
+  automated: 'rgba(139,92,246,0.18)',
+  end: 'rgba(248,113,113,0.15)',
 };
 
 const BADGE_TEXT: Record<string, string> = {
@@ -42,8 +42,8 @@ export function SimulationLog({ result }: Props) {
       <div
         style={{
           borderRadius: '10px',
-          border: '1px solid rgba(239,68,68,0.35)',
-          background: 'rgba(239,68,68,0.08)',
+          border: '1px solid rgba(248,113,113,0.4)',
+          background: 'rgba(248,113,113,0.08)',
           padding: '16px',
         }}
       >
@@ -53,7 +53,14 @@ export function SimulationLog({ result }: Props) {
         {result.errors.map((err, i) => (
           <div
             key={i}
-            style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '13px', color: 'var(--color-error)', marginBottom: '6px' }}
+            style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '8px',
+              fontSize: '13px',
+              color: 'var(--color-error)',
+              marginBottom: '6px',
+            }}
           >
             <span>✗</span>
             <span>{err}</span>
@@ -73,9 +80,9 @@ export function SimulationLog({ result }: Props) {
         style={{
           marginBottom: '16px',
           padding: '12px 14px',
-          borderRadius: '8px',
+          borderRadius: '10px',
           border: '1px solid var(--color-border-1)',
-          background: 'var(--color-bg-1)',
+          background: 'rgba(17,21,30,0.7)',
         }}
       >
         <p style={{ fontSize: '12px', color: 'var(--color-text-2)', lineHeight: 1.5 }}>
@@ -124,6 +131,7 @@ export function SimulationLog({ result }: Props) {
                   borderRadius: '10px',
                   border: '1px solid var(--color-border-2)',
                   background: 'var(--color-bg-3)',
+                  boxShadow: 'var(--shadow-node)',
                   padding: '12px 14px',
                 }}
               >
@@ -135,7 +143,8 @@ export function SimulationLog({ result }: Props) {
                       textTransform: 'uppercase',
                       letterSpacing: '0.06em',
                       padding: '2px 8px',
-                      borderRadius: '4px',
+                      borderRadius: '999px',
+                      border: `1px solid ${fg}55`,
                       background: bg,
                       color: fg,
                     }}

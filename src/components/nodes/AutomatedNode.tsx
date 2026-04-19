@@ -23,30 +23,11 @@ export const AutomatedNode = memo(function AutomatedNode({ id, data, selected }:
         .filter(Boolean)
         .join(' ')}
     >
-      <div style={{ padding: '12px 14px 10px 18px' }}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: '6px',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '14px' }}>⚡</span>
-            <span
-              style={{
-                fontSize: '13px',
-                fontWeight: 600,
-                color: 'var(--color-text-1)',
-                maxWidth: '140px',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {d.title || 'Automated'}
-            </span>
+      <div className="wf-node-header">
+        <div className="wf-node-header-row">
+          <div className="wf-node-title-wrap">
+            <span className="wf-node-icon">⚡</span>
+            <span className="wf-node-title">{d.title || 'Automated'}</span>
           </div>
           {isInvalid ? (
             <span className="node-error-pill" title={nodeErrors.join('\n')}>
@@ -54,45 +35,39 @@ export const AutomatedNode = memo(function AutomatedNode({ id, data, selected }:
             </span>
           ) : (
             <span
+              className="wf-node-status-dot"
               style={{
-                width: '7px',
-                height: '7px',
-                borderRadius: '50%',
                 background: d.actionId ? 'var(--color-success)' : 'var(--color-error)',
-                boxShadow: d.actionId ? '0 0 6px var(--color-success)' : '0 0 6px var(--color-error)',
-                display: 'block',
-                flexShrink: 0,
+                boxShadow: d.actionId
+                  ? '0 0 9px rgba(34, 197, 94, 0.68)'
+                  : '0 0 9px rgba(248, 113, 113, 0.65)',
               }}
             />
           )}
         </div>
         <span
+          className="wf-node-tag"
           style={{
-            fontSize: '10px',
-            fontWeight: 500,
-            letterSpacing: '0.07em',
-            textTransform: 'uppercase',
             color: 'var(--color-automated)',
-            background: 'rgba(139,92,246,0.12)',
-            padding: '2px 7px',
-            borderRadius: '4px',
+            background: 'rgba(139, 92, 246, 0.16)',
+            borderColor: 'rgba(139, 92, 246, 0.35)',
           }}
         >
           Automation
         </span>
       </div>
-      <div style={{ padding: '8px 14px 12px 18px', borderTop: '1px solid var(--color-border-1)' }}>
+      <div className="wf-node-body">
         <p
           style={{
             fontSize: '12px',
-            color: d.actionId ? 'var(--color-automated)' : 'var(--color-text-3)',
+            color: d.actionId ? 'var(--color-text-2)' : 'var(--color-text-3)',
             fontStyle: d.actionId ? 'normal' : 'italic',
           }}
         >
           {action ? action.label : d.actionId || 'No action configured'}
         </p>
         {d.retryOnFailure ? (
-          <p style={{ fontSize: '11px', color: 'var(--color-text-3)', marginTop: '2px' }}>
+          <p style={{ fontSize: '11px', color: 'var(--color-automated)', marginTop: '5px' }}>
             ↺ Retry on failure
           </p>
         ) : null}
