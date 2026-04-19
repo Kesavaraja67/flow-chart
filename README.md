@@ -3,6 +3,8 @@
 # 🟣 FlowCraft
 ### *Design, Validate, and Simulate HR Workflows on an Infinite Canvas*
 
+**[Live Demo](https://flow-chart-delta.vercel.app)**
+
 <br />
 
 <img src="./app-interface.png" width="750">
@@ -15,11 +17,14 @@
 
 ## ✨ Key Features
 
+<div align="center">
 
 | 🖱️ Builder | ✅ Logic | ⏱️ Simulation |
 | :--- | :--- | :--- |
 | **Drag-and-drop** builder | **Built-in validation** | **Timeline logs** |
 | **Undo/Redo** history | **Typed forms** | **JSON Export/Import** |
+
+</div>
 
 <br />
 
@@ -34,6 +39,6 @@
 ## 🚀 Quick Start
 
 ```bash
-git clone https://github.com/Kesavaraja67/flow-chart.git
+git clone [https://github.com/Kesavaraja67/flow-chart.git](https://github.com/Kesavaraja67/flow-chart.git)
 cd flow-chart && npm install
 npm run dev
